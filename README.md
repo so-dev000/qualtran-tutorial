@@ -1,102 +1,118 @@
-# Qualtran Tutorial: 有限体 DLP 学習ロードマップ
+# Qualtran Tutorial: GF(p^r) DLP Learning Roadmap
 
-Qualtran で有限体上の離散対数問題（DLP）の論理回路とリソースを見積もるための学習用 notebook 集です。
+Qualtran で GF(p^r) 上の Shor 型 DLP 回路を構築し、論理・物理リソースを見積もるための notebook 集です。
 
-優先度は `◎◎ / ◎ / ○ / △ / ×` の順です。ディレクトリ番号は作成順であり、学習順は以下の索引に従ってください。
+優先度は `◎◎ / ◎ / ○ / △ / ×` の順です。`×` は今回読まない項目です。
 
-## セットアップ
+## Setup
 
 ```bash
 uv sync
 uv run jupyter lab
 ```
 
-最初に [Setup and Sanity Check](notebooks/00_setup.ipynb) から公式ドキュメントを開きます。
+[Setup and Sanity Check](notebooks/00_setup.ipynb)
 
-## 推奨学習順
+## I. Fundamentals
 
-### 0. Fundamentals
+最初にすべて完了します。
 
-まず [Fundamentals](notebooks/01_fundamentals/) を次の順で進めます。
+1. ◎ [Bloqs Tutorial](notebooks/01_fundamentals/01_bloqs_tutorial.ipynb)
+2. ◎ [Data Types](notebooks/01_fundamentals/02_data_types.ipynb)
+3. ○ [Protocols](notebooks/01_fundamentals/03_protocols.ipynb)
+4. ◎ [Classical Simulation](notebooks/01_fundamentals/04_classical_simulation.ipynb)
+5. × [Tensor Simulation](notebooks/01_fundamentals/05_tensor_simulation.ipynb)
+6. ◎ [The Call Graph Protocol](notebooks/01_fundamentals/06_call_graph.ipynb)
+7. ◎ [Qubit Counts](notebooks/01_fundamentals/07_qubit_counts.ipynb)
+8. ○ [Adjoint](notebooks/01_fundamentals/08_adjoint.ipynb)
+9. ◎ [Controlled](notebooks/01_fundamentals/09_controlled.ipynb)
 
-1. [Bloqs Tutorial](notebooks/01_fundamentals/01_bloqs_tutorial.ipynb) ◎
-2. [Data Types](notebooks/01_fundamentals/03_data_types.ipynb) ◎
-3. [Protocols](notebooks/01_fundamentals/02_protocols.ipynb) ○
-4. [Classical Simulation](notebooks/01_fundamentals/04_classical_simulation.ipynb) ◎
-5. [Call Graph](notebooks/01_fundamentals/06_call_graph.ipynb) ◎
-6. [Qubit Counts](notebooks/01_fundamentals/07_qubit_counts.ipynb) ◎
-7. [Controlled](notebooks/01_fundamentals/09_controlled.ipynb) ◎
-8. [Adjoint](notebooks/01_fundamentals/08_adjoint.ipynb) ○
+## II. Shor / DLP Structure in Qualtran
 
-[Tensor Simulation](notebooks/01_fundamentals/05_tensor_simulation.ipynb) は現段階では任意です。
+10. ◎ Concepts
+    - [Factoring and Shor's Algorithm](notebooks/02_shor_dlp_structure/10_concepts/01_factoring_and_shor.ipynb)
+11. ◎ Root Bloqs
+    - [Elliptic Curve Cryptography](notebooks/02_shor_dlp_structure/11_root_bloqs/01_elliptic_curve_cryptography.ipynb)
+12. ○ Rotations
+    - [Textbook QFT](notebooks/02_shor_dlp_structure/12_rotations/01_textbook_qft.ipynb)
+    - [Textbook Quantum Phase Estimation](notebooks/02_shor_dlp_structure/12_rotations/02_textbook_qpe.ipynb)
 
-### 1. Shor で Qualtran を一周する
+ECC notebook は楕円曲線算術そのものではなく、`FindECCPrivateKey → ECPhaseEstimateR → ECAddR` という DLP の上位構造を読むために使います。
 
-- [Factoring and Shor's Algorithm](notebooks/04_bloqs_library/01_concepts/01_factoring_and_shor.ipynb) ◎
-- [Factoring RSA](notebooks/04_bloqs_library/02_modular_arithmetic/01_factoring_rsa.ipynb) ○
-- [Modular Multiplication / CModMulK](notebooks/04_bloqs_library/02_modular_arithmetic/02_modular_multiplication.ipynb) ○
+## III. F_p Arithmetic
 
-### 2. Shor 型 DLP の上位構造
+GF(p^r) 実装の係数体となる F_p 算術を学びます。
 
-- [Textbook QFT](notebooks/04_bloqs_library/03_rotations/01_textbook_qft.ipynb) ○
-- [Textbook Quantum Phase Estimation](notebooks/04_bloqs_library/03_rotations/02_textbook_qpe.ipynb) ◎
-- [Elliptic Curve Cryptography](notebooks/04_bloqs_library/04_root_bloqs/01_elliptic_curve_cryptography.ipynb) ◎
+13. ◎ Arithmetic
+    - ◎ [Addition](notebooks/03_fp_arithmetic/13_arithmetic/01_addition.ipynb)
+    - ◎ [Controlled Addition](notebooks/03_fp_arithmetic/13_arithmetic/02_controlled_addition.ipynb)
+    - ○ [Negation](notebooks/03_fp_arithmetic/13_arithmetic/03_negation.ipynb)
+    - ◎ [Subtraction](notebooks/03_fp_arithmetic/13_arithmetic/04_subtraction.ipynb)
+    - ○ [Controlled Add-or-Subtract](notebooks/03_fp_arithmetic/13_arithmetic/05_controlled_add_or_subtract.ipynb)
+    - ○ [Multiplication](notebooks/03_fp_arithmetic/13_arithmetic/06_multiplication.ipynb)
+    - ○ [Comparison](notebooks/03_fp_arithmetic/13_arithmetic/07_comparison.ipynb)
+14. ◎◎ Modular Arithmetic
+    - ◎ [Modular Addition](notebooks/03_fp_arithmetic/14_modular_arithmetic/01_modular_addition.ipynb)
+    - ◎ [Modular Subtraction](notebooks/03_fp_arithmetic/14_modular_arithmetic/02_modular_subtraction.ipynb)
+    - ◎ [Modular Multiplication](notebooks/03_fp_arithmetic/14_modular_arithmetic/03_modular_multiplication.ipynb)
+    - × [Modular Division](notebooks/03_fp_arithmetic/14_modular_arithmetic/04_modular_division.ipynb)
+    - ○ [Factoring RSA](notebooks/03_fp_arithmetic/14_modular_arithmetic/05_factoring_rsa.ipynb)
 
-ECC notebook は算術の詳細ではなく、`FindECCPrivateKey → ECPhaseEstimateR → ECAddR` という DLP の組み立て方を読むために使います。
+## IV. GF(p^r) Representation
 
-### 3. 有限体 DLP の本命部分
+15. ◎ Polynomials over Galois Fields
+    - [Polynomials over GF(p^m) - Split and Join](notebooks/04_gf_pr_representation/15_gf_polynomials/01_gf_poly_split_join.ipynb)
+16. ○ GF Arithmetic
+    - ◎ [GF(2^m) Multiplication](notebooks/04_gf_pr_representation/16_gf_arithmetic/01_gf2_multiplication.ipynb)
+    - ○ [GF(2^m) Addition](notebooks/04_gf_pr_representation/16_gf_arithmetic/02_gf2_addition.ipynb)
+    - 参照 [GF(2^m) Add Constant](notebooks/04_gf_pr_representation/16_gf_arithmetic/03_gf2_add_constant.ipynb)
+    - × [GF(2^m) Square](notebooks/04_gf_pr_representation/16_gf_arithmetic/04_gf2_square.ipynb)
+    - × [GF(2^m) Inverse](notebooks/04_gf_pr_representation/16_gf_arithmetic/05_gf2_inverse.ipynb)
 
-次の順で [GF Arithmetic](notebooks/04_bloqs_library/05_gf_arithmetic/) を進めます。
+GF(2^m) の notebook は直接流用するためではなく、GF(p^r) Bloq の実装例として読みます。
 
-1. [GF(2^m) Addition](notebooks/04_bloqs_library/05_gf_arithmetic/01_gf2_addition.ipynb) ◎
-2. [GF(2^m) Add Constant](notebooks/04_bloqs_library/05_gf_arithmetic/02_gf2_add_constant.ipynb) ○
-3. [GF(2^m) Multiplication](notebooks/04_bloqs_library/05_gf_arithmetic/03_gf2_multiplication.ipynb) ◎◎
-4. [GF(2^m) Square](notebooks/04_bloqs_library/05_gf_arithmetic/04_gf2_square.ipynb) ○
-5. [GF(2^m) Inverse](notebooks/04_bloqs_library/05_gf_arithmetic/05_gf2_inverse.ipynb) ○
-6. [GF Polynomial Split / Join](notebooks/04_bloqs_library/06_gf_polynomials/01_gf_poly_split_join.ipynb) ○
+## V. Implement the Baseline
 
-Multiplication notebook では `GF2MulK` を最優先し、`GF2Multiplication`、shift、binary polynomial multiplication、Karatsuba を同じページで比較します。
+ここでドキュメントを読むのを一度止め、[GF(p^r) Shor-DLP Implementation](notebooks/05_dlp_implementation/01_shor_dlp_implementation.ipynb) に baseline を実装します。
 
-### 4. 有限体 DLP baseline
+## VI. Advanced Topics
 
-[Finite-Field DLP Baseline](notebooks/05_dlp_baseline/01_finite_field_dlp_baseline.ipynb) を、自分の baseline 実装を書き始める場所として使います。
+Baseline 完成後に進みます。
 
-ここまで終えたら、一度 Qualtran の読み進めを止め、自分の問題設定へ baseline を移植します。
+17. ◎ [Composite Bloq Manipulation](notebooks/06_advanced_topics/17_composite_bloq_manipulation.ipynb)
+18. ◎ [Bloqs with Specialized Controlled Implementations](notebooks/06_advanced_topics/18_specialized_controlled_implementations.ipynb)
+19. ○ [Propagating the Adjoint](notebooks/06_advanced_topics/19_propagating_the_adjoint.ipynb)
+20. △ [T Complexity](notebooks/06_advanced_topics/20_t_complexity.ipynb)
+21. △ [Drawing Call Graphs](notebooks/06_advanced_topics/21_drawing_call_graphs.ipynb)
+22. △ [Cross-checking Classical Simulation](notebooks/06_advanced_topics/22_cross_checking_classical_simulation.ipynb)
 
-### 5. Baseline 後の最適化
+今回読まないページ: [Cirq Interoperability](notebooks/06_advanced_topics/cirq_interoperability.ipynb)、[Gate with Registers](notebooks/06_advanced_topics/gate_with_registers.ipynb)、[Musical Score](notebooks/06_advanced_topics/musical_score.ipynb)、[Documenting Bloqs](notebooks/06_advanced_topics/documenting_bloqs.ipynb)
 
-最初に既存の Advanced Topics を使います。
+## VII. Advanced Arithmetic Optimization
 
-- [Composite Bloq Manipulation](notebooks/03_advanced/01_composite_bloq_manipulation.ipynb) ◎
-- [Specialized Controlled Implementations](notebooks/03_advanced/06_specialized_ctrl.ipynb) ◎
-- [T Complexity](notebooks/03_advanced/03_t_complexity.ipynb) △
+必要になった場合だけ進みます。
 
-windowing / lookup が必要な場合だけ次へ進みます。
+23. △ Concepts
+    - [Unary Iteration](notebooks/07_arithmetic_optimization/23_concepts/01_unary_iteration.ipynb)
+    - [T Complexity Of Comparison Gates](notebooks/07_arithmetic_optimization/23_concepts/02_t_complexity_of_comparison_gates.ipynb)
+24. △ Other
+    - [QROM](notebooks/07_arithmetic_optimization/24_other/01_qrom.ipynb)
+    - [SelectSwapQROM](notebooks/07_arithmetic_optimization/24_other/02_select_swap_qrom.ipynb)
+    - [Advanced QROM / QROAM](notebooks/07_arithmetic_optimization/24_other/03_qroam_clean.ipynb)
 
-- [Unary Iteration](notebooks/04_bloqs_library/01_concepts/02_unary_iteration.ipynb) △
-- [QROM](notebooks/04_bloqs_library/07_data_loading/01_qrom.ipynb) △
-- [SelectSwapQROM](notebooks/04_bloqs_library/07_data_loading/02_select_swap_qrom.ipynb) △
-- [QROAMClean](notebooks/04_bloqs_library/07_data_loading/03_qroam_clean.ipynb) △
+## VIII. Quantum Computer Architectures
 
-基本ゲートは必要時に [Basic Gates](notebooks/04_bloqs_library/08_basic_gates/) を参照します。
+論理リソース推定の完成後に進みます。
 
-### 6. Physical resource estimation
+25. ◎◎ [Architecture-dependent physical costs](notebooks/08_architectures/25_physical_cost_model.ipynb)
+26. ◎ [Beverland et al. Model](notebooks/08_architectures/26_beverland_model.ipynb)
+- △ [Interop with Microsoft Resource Estimator](notebooks/08_architectures/msft_resource_estimator.ipynb)
+- × [THC FeMoco Compilation](notebooks/08_architectures/thc_femoco.ipynb)
 
-論理リソース推定の完成後に [Quantum Computer Architectures](notebooks/02_architectures/) へ進みます。
+## IX. Out of Scope
 
-1. [Physical Cost Model](notebooks/02_architectures/01_physical_cost_model.ipynb) ◎
-2. [Beverland et al. Model](notebooks/02_architectures/02_beverland_model.ipynb) ◎
-3. [Microsoft Resource Estimator](notebooks/02_architectures/04_msft_resource_estimator.ipynb) △
+Chemistry、Block Encoding、Qubitization、Hamiltonian Simulation、Trotter、Quantum Walk PE、state preparation、Kikuchi、および chemistry resource estimation は今回の notebook 集には含めません。
 
-THC FeMoco は今回の学習対象外です。
+## Notebook Format
 
-### 7. 最終検証・論文用
-
-- [Drawing Call Graphs](notebooks/03_advanced/09_drawing_call_graphs.ipynb) ○
-- [Cross-checking Classical Simulation](notebooks/03_advanced/11_cross_checking_classical_simulation.ipynb) ○
-- [Qualtran + QREF & Bartiq](notebooks/03_advanced/04_qref_bartiq.ipynb) △
-- [Microsoft Resource Estimator](notebooks/02_architectures/04_msft_resource_estimator.ipynb) △
-
-## 検証
-
-追加した notebook は、英語タイトル、対応する公式ドキュメントへのリンク、実装用の英語小節見出しだけを置いた skeleton です。
+Skeleton notebook は、英語タイトル、対応する Qualtran 公式ドキュメントへのリンク、ロードマップ直下の英語小節見出しだけで構成しています。既に学習内容が記入されている Fundamentals notebook のコードセルと実行結果は保持しています。
